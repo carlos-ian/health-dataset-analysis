@@ -36,7 +36,7 @@ O conjunto de dados é composto por aproximadamente **5.000 observações** e **
 
 ## 🧰 Ferramentas Utilizadas
 
-- **Python 3.13.6
+- **Python 3.13.6**
 - **RStudio**, IDE para programação em R
 - **Kangle**, plataforma para obtenção do conjunto de dados
 
