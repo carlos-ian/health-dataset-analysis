@@ -41,6 +41,3 @@ O conjunto de dados é composto por aproximadamente **5.000 observações** e **
 - **Kangle**, plataforma para obtenção do conjunto de dados
 
 ---
-
-## 📁 Estrutura do Projeto
-
