@@ -1,0 +1,493 @@
+---
+title: "Estatística Descritiva no R"
+subtitle: 'Curso: Engenharia de Software'
+author: "Ian Carlos Lima Tavares"
+date: "07/11/2025"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, # se for no trabalho, deixar FALSE
+  fig.align = "center",    # centraliza os gráficos - pode configurar a vontade
+  out.width = "80%"       # define a largura como 80% da página  - pode configurar a vontade
+  )
+
+library(knitr)
+library(kableExtra)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# 1. Carregamento dos dados: USANDO read_excel
+# Caminho: Rmd em /Analises/, sobe para pasta mãe com ../ para acessar /Conjunto de Dados
+dados <- read_excel(
+  path = "../Conjunto de Dados/conceito_enade_2023.xlsx" 
+  )
+```
+
+# 1.Introdução
+
+Deve ter contextualização do tema, do trabalho, citação e contextualização da fonte do conjunto de dados, objetivos e afins.
+
+# 2. Descrição das Variáveis
+
+Deve ter para cada variável: tipo da variável (qualitativa, quantitativa discreta, quantitativa contínua), para quer serve, significado ou o que a variável representa, valores que a variável pode assumir (Ex: 1o Ensino Médio, 2o Ensino Médio... - para variáveis quantitativas, provalvemente, não precisa).
+
+# 3. Análises Descritivas da Variáveis
+
+## 3.1. Área de Avaliação
+
+## 3.2. Código da IES
+
+## 3.3. Nome da IES 
+(provavelmente deve estar junto com o Código da IES)
+
+## 3.4. Categoria Administrativa
+
+## 3.5. Modalidade de Ensino
+
+A modalidade de ensino é uma variável qualitativa que pode assumir dois valores: Educação Presencial e Educação a Distância. Ela representa a forma de ensino do curso, isto é, se suas aulas são realizadas presencialmente ou de forma on-line (a distância).
+
+```{r}
+# Limpeza e sumarização dos dados
+df_freq <- dados %>%
+  # Conta a frequência absoluta (n) de cada modalidade
+  count(`Modalidade de Ensino`, name = "Frequência Absoluta (n)") %>%
+  
+  # Cria a coluna de Frequência Relativa (%)
+  mutate(
+    `Frequência Relativa (%)` = (`Frequência Absoluta (n)` / sum(`Frequência Absoluta (n)`)) * 100
+  ) %>%
+  # Arredonda as colunas de percentual para 2 casas decimais
+  mutate(across(starts_with("Frequência"), ~round(., 2)))
+
+# Geração da tabela formatada
+df_freq %>%
+  kable(
+    caption = "Figura X - Tabela de Frequências da Modalidade de Ensino",
+    col.names = c("Modalidade", "Frequência Absoluta (n)", "Frequência Relativa (%)"),
+    align = c('l', 'c', 'c')
+  ) %>%
+  kable_styling(
+    bootstrap_options = "striped", 
+    full_width = F,
+    position = "center"
+  )
+```
+
+
+
+```{r}
+# Geração do gráfico de barras com ggplot2
+ggplot(df_freq, aes(x = `Modalidade de Ensino`, y = `Frequência Relativa (%)`, fill = `Modalidade de Ensino`)) +
+  # Adiciona as barras
+  geom_col(color = "black") +
+  # Adiciona os rótulos de percentual nas barras
+  geom_text(aes(label = paste0(`Frequência Relativa (%)`, "%")), 
+            vjust = -0.5, size = 4) +
+  # Personalização do tema e rótulos
+  labs(
+    title = "Distribuição de Modalidade de Ensino",
+    x = "Modalidade de Ensino",
+    y = "Frequência Relativa (%)",
+    fill = "Modalidade"
+  ) +
+  # Configurações visuais adicionais
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    # O texto fica horizontal por padrão ao não definir 'angle'
+    legend.position = "none" # Oculta a legenda, pois as cores são redundantes com o eixo X
+  ) +
+  # Garante que o eixo Y comece em 0 e tenha uma margem
+  scale_y_continuous(limits = c(0, max(df_freq$`Frequência Relativa (%)`)*1.1))
+```
+
+A partir da Tabela 1 e do Gráfico 1, percebe-se que a grande maioria dos cursos são realizados em 'r df_freq$Modalidade de Ensino[which.max(df_freq$Frequência Absoluta (n))]', sendo ao total 'r presencial_n observações'. Ademais, é perceptível uma grande diferença entre as duas modalidades de ensino, apresentando um desequilíbrio ou assimetria de 'r diferenca_n' cursos na frequência absoluta, o que equivale a 'r round(diferenca_perc, 2)' pontos percentuais. Esse resultado permite deduzir uma grande preferência da modalidade Educação Presencial na maioria dos cursos avaliados.
+
+## 3.6. Sigla da UF
+
+## 3.7. Número de Concluintes Participantes
+
+## 3.8. Nota Padronizada FG
+
+A variável Nota Padronizada - FG é do tipo quantitativa contínua, representando uma pontuação média normalizada. Esta nota pode assumir valores decimais, de 0 a 5, e reflete o desempenho médio dos estudantes de uma instituição na componente de Formação Geral do ENADE
+
+```{r}
+# Lembre-se: Use este código *apenas* depois de garantir que o 
+# comando read.csv() funcionou corretamente e carregou os dados em enade_df.
+
+# --- 1. Seleção da Variável e Limpeza (NA.RM = TRUE) ---
+fg_nota <- dados$`Nota Padronizada - FG`
+
+# --- 2. Determinar o Número de Classes (k) e Amplitude (h) ---
+
+# O PONTO CRÍTICO CORRIGIDO: Adicionando na.rm = TRUE
+n <- length(fg_nota) 
+k <- nclass.Sturges(fg_nota)
+
+# Amplitude Total (At) - CORREÇÃO AQUI!
+At <- max(fg_nota, na.rm = TRUE) - min(fg_nota, na.rm = TRUE)
+
+# Usaremos a amplitude ajustada de 0.25
+h_ajustado <- 0.25 
+k_ajustado <- ceiling(At / h_ajustado)
+
+# --- 3. Criação dos Intervalos de Classe ---
+
+# CORREÇÃO AQUI: Usando min e max com na.rm = TRUE para a função seq()
+quebras <- seq(min(fg_nota, na.rm = TRUE), 
+               max(fg_nota, na.rm = TRUE) + h_ajustado, 
+               by = h_ajustado)
+
+# Cria os rótulos de classes
+classes <- cut(fg_nota, 
+               breaks = quebras, 
+               right = FALSE, 
+               include.lowest = TRUE,
+               dig.lab = 4) 
+
+```
+
+
+```{r}
+# Histograma para a variável Nota Padronizada - FG, 
+# usando as quebras de classe calculadas.
+hist(fg_nota, 
+     breaks = quebras,
+     main = "Histograma da Nota Padronizada - FG (ENADE 2023)",
+     xlab = "Nota Padronizada - FG",
+     ylab = "Frequência Absoluta",
+     col = "lightblue",
+     border = "darkblue",
+     las = 1 # Para fazer os rótulos do eixo Y horizontais
+)
+```
+
+O Histograma apresenta uma forma que se aproxima de uma distribuição normal (simétrica), com a maior concentração de frequência – a moda – nas classes centrais. Essa concentração máxima de observações está localizada em torno das notas de 3.25 a 3.75, indicando que a maior parte das instituições obteve uma performance mediana.
+
+```{r}
+# Boxplot da Nota Padronizada - FG
+boxplot(fg_nota, 
+        main = "Boxplot da Nota Padronizada - FG",
+        ylab = "Nota",
+        col = "lightgreen",
+        border = "darkgreen",
+        las = 1,
+        horizontal = TRUE # Boxplot horizontal para melhor visualização
+)
+
+# --- Medidas Separatrizes (Quartis e Mediana) ---
+
+# O comando summary() fornece o Mínimo, 1º Quartil (Q1), Mediana (Q2), Média, 3º Quartil (Q3) e Máximo.
+# É ESSENCIAL usar na.rm = TRUE, pois a variável fg_nota tem NAs.
+medidas_separatrizes <- summary(fg_nota, na.rm = TRUE)
+
+# Calcula o 90º Percentil (P90)
+p90 <- quantile(fg_nota, 0.90, na.rm = TRUE)
+
+# Incluir o P90 no vetor de saída
+medidas_separatrizes <- c(medidas_separatrizes, "90º Percentil" = p90)
+
+# Exibir Tabela de Medidas Separatrizes (usando knitr::kable)
+medidas_df <- as.data.frame(t(medidas_separatrizes))
+colnames(medidas_df) <- c("Mínimo", "1º Quartil (Q1)", "Mediana (Q2)", "Média", "3º Quartil (Q3)", "Máximo", "90º Percentil (P90)")
+
+knitr::kable(medidas_df, 
+             caption = "Medidas Separatrizes da Nota Padronizada FG", 
+             align = "c", 
+             digits = 4)
+```
+
+O Boxplot da Nota Padronizada - FG mostra a distribuição dos dados de forma concisa. A linha central da caixa, que representa a Mediana (Q2), está em 'r round(medidas_separatrizes["Mediana (Q2)"], 4)'. A posição da Mediana, que está quase centralizada na caixa, sugere uma distribuição relativamente simétrica. A caixa (Intervalo Interquartil) abrange 50% das observações entre o $1^{\circ}$ Quartil '(r round(medidas_separatrizes["1º Quartil (Q1)"], 4))' e o $3^{\circ}$ Quartil '(r round(medidas_separatrizes["3º Quartil (Q3)"], 4))'. É importante notar que o Boxplot não apresenta outliers (pontos fora dos bigodes), indicando que não há instituições com notas excepcionalmente baixas ou altas que estejam distantes da grande maioria.
+
+Ao analisar as Medidas Separatrizes, notamos que a Mediana (Q2), que divide os dados em 50%, é de r round(medidas_separatrizes["Mediana (Q2)"], 4). A Média, por sua vez, é de r round(medidas_separatrizes["Média"], 4). Como o valor da Média é ligeiramente inferior ao da Mediana, isso confirma a leve assimetria negativa (assimetria à esquerda) visualizada no Histograma. Na prática, isso sugere que a cauda de notas mais baixas (abaixo da média) é sutilmente mais longa.A concentração dos dados também é bem definida pelo Intervalo Interquartil (IIQ), que abrange 50% dos dados. Metade das notas está concentrada no intervalo entre o $1^{\circ}$ Quartil (r round(medidas_separatrizes["1º Quartil (Q1)"], 4)) e o $3^{\circ}$ Quartil (r round(medidas_separatrizes["3º Quartil (Q3)"], 4)). Por fim, o 90º Percentil (P90), com valor de r round(medidas_separatrizes["90º Percentil"], 4), demarca o desempenho das instituições de excelência, indicando que apenas 10% delas alcançaram essa nota ou mais.
+
+## 3.9. Nota Padronizada CE
+
+A variável Nota Padronizada - CE é do tipo quantitativa contínua, representando uma pontuação média normalizada. Esta nota pode assumir valores decimais, teoricamente de 0 a 5, e reflete o desempenho médio dos estudantes de uma instituição na componente de Formação Específica do ENADE.
+
+```{r}
+# --- 1. Seleção da Variável e Classes de Frequência ---
+ce_nota <- dados$`Nota Padronizada - CE`
+
+# O PONTO CRÍTICO: Garantir que min/max ignorem NAs
+At <- max(ce_nota, na.rm = TRUE) - min(ce_nota, na.rm = TRUE)
+h_ajustado <- 0.25 
+
+# Criação dos Intervalos de Classe
+quebras <- seq(min(ce_nota, na.rm = TRUE), 
+               max(ce_nota, na.rm = TRUE) + h_ajustado, 
+               by = h_ajustado)
+
+classes_ce <- cut(ce_nota, 
+               breaks = quebras, 
+               right = FALSE, 
+               include.lowest = TRUE,
+               dig.lab = 4)
+```
+
+
+```{r}
+# --- 2. Histograma ---
+hist(ce_nota, 
+     breaks = quebras,
+     main = "Histograma da Nota Padronizada - CE (Componente Específico)",
+     xlab = "Nota Padronizada - CE",
+     ylab = "Frequência Absoluta",
+     col = "#FFA07A", # Cor salmão para diferenciação
+     border = "#CD5C5C",
+     las = 1
+)
+```
+
+A distribuição da Nota Padronizada - CE exibe uma forma que se assemelha muito à de Formação Geral, indicando uma performance consistente. O Histograma mostra uma curva aproximadamente simétrica, com o pico de frequência, ou a moda, bem concentrada nas classes entre r round(quebras[6], 4) e r round(quebras[8], 4) (notas entre 3.15 e 3.65). Isso demonstra que a maioria das instituições apresenta um desempenho intermediário no componente específico do ENADE.
+
+```{r}
+# --- 3. Boxplot e Medidas Separatrizes ---
+boxplot(ce_nota, 
+        main = "Boxplot da Nota Padronizada - CE",
+        ylab = "Nota",
+        col = "#87CEFA", # Cor azul claro
+        border = "#4682B4",
+        las = 1,
+        horizontal = TRUE 
+)
+
+# Cálculo das Medidas Separatrizes
+medidas_separatrizes_ce <- summary(ce_nota, na.rm = TRUE)
+p90_ce <- quantile(ce_nota, 0.90, na.rm = TRUE)
+medidas_separatrizes_ce <- c(medidas_separatrizes_ce, "90º Percentil" = p90_ce)
+
+medidas_df_ce <- as.data.frame(t(medidas_separatrizes_ce))
+colnames(medidas_df_ce) <- c("Mínimo", "1º Quartil (Q1)", "Mediana (Q2)", "Média", "3º Quartil (Q3)", "Máximo", "90º Percentil (P90)")
+
+knitr::kable(medidas_df_ce, 
+             caption = "Medidas Separatrizes da Nota Padronizada CE", 
+             align = "c", 
+             digits = 4)
+```
+
+O Boxplot corrobora a simetria, visto que a Mediana (Q2) de r round(medidas_separatrizes_ce["Mediana (Q2)"], 4) está centralizada dentro da caixa (Intervalo Interquartil), que se estende de r round(medidas_separatrizes_ce["1º Quartil (Q1)"], 4) até r round(medidas_separatrizes_ce["3º Quartil (Q3)"], 4). O Boxplot também não exibe outliers, o que sugere uma ausência de notas extremamente discrepantes nos extremos.
+
+Em relação às Medidas Separatrizes, observamos que a Média (r round(medidas_separatrizes_ce["Média"], 4)) é ligeiramente menor que a Mediana, reforçando a indicação de uma leve assimetria negativa (cauda sutilmente mais longa para notas mais baixas) observada no Histograma. Por fim, o 90º Percentil (P90), com valor de r round(medidas_separatrizes_ce["90º Percentil"], 4), significa que apenas 10% das instituições conseguiram uma Nota Padronizada - CE igual ou superior a este valor, estabelecendo um limite de alto desempenho neste componente.
+
+## 3.10. Conceito Enade
+
+A variável Conceito Enade (Contínuo) é do tipo quantitativa contínua, que sintetiza o desempenho dos estudantes em Formação Geral e Componente Específico. Este conceito pode assumir valores decimais, teoricamente de 0 a 5, e é a nota final utilizada para classificar a qualidade de um curso.
+
+```{r}
+# --- 1. Seleção da Variável e Classes de Frequência ---
+enade_conceito <- dados$`Conceito Enade (Contínuo)`
+
+# O PONTO CRÍTICO: Garantir que min/max ignorem NAs
+At <- max(enade_conceito, na.rm = TRUE) - min(enade_conceito, na.rm = TRUE)
+h_ajustado <- 0.25 
+
+# Criação dos Intervalos de Classe
+quebras <- seq(min(enade_conceito, na.rm = TRUE), 
+               max(enade_conceito, na.rm = TRUE) + h_ajustado, 
+               by = h_ajustado)
+
+classes_enade <- cut(enade_conceito, 
+               breaks = quebras, 
+               right = FALSE, 
+               include.lowest = TRUE,
+               dig.lab = 4)
+```
+
+
+```{r}
+# --- 2. Histograma ---
+hist(enade_conceito, 
+     breaks = quebras,
+     main = "Histograma do Conceito Enade (Contínuo)",
+     xlab = "Conceito Enade (Contínuo)",
+     ylab = "Frequência Absoluta",
+     col = "#B0E0E6", # Cor Powder Blue para diferenciação
+     border = "#4682B4",
+     las = 1
+)
+```
+
+A distribuição do Conceito Enade (Contínuo) é o reflexo da média ponderada dos componentes de Formação Geral e Específica, e, por isso, sua forma é similar às variáveis anteriores. O Histograma exibe uma distribuição com formato ligeiramente alongado, sendo a moda concentrada em torno dos conceitos de 3.35 a 3.85. Isso indica que a maioria dos cursos avaliados pelo ENADE alcança conceitos médios a bons.
+
+```{r}
+# --- 3. Boxplot e Medidas Separatrizes ---
+boxplot(enade_conceito, 
+        main = "Boxplot do Conceito Enade (Contínuo)",
+        ylab = "Conceito",
+        col = "#90EE90", # Cor Light Green
+        border = "#3CB371",
+        las = 1,
+        horizontal = TRUE 
+)
+
+# Cálculo das Medidas Separatrizes
+medidas_separatrizes_enade <- summary(enade_conceito, na.rm = TRUE)
+p90_enade <- quantile(enade_conceito, 0.90, na.rm = TRUE)
+medidas_separatrizes_enade <- c(medidas_separatrizes_enade, "90º Percentil" = p90_enade)
+
+medidas_df_enade <- as.data.frame(t(medidas_separatrizes_enade))
+colnames(medidas_df_enade) <- c("Mínimo", "1º Quartil (Q1)", "Mediana (Q2)", "Média", "3º Quartil (Q3)", "Máximo", "90º Percentil (P90)")
+
+knitr::kable(medidas_df_enade, 
+             caption = "Medidas Separatrizes do Conceito Enade (Contínuo)", 
+             align = "c", 
+             digits = 4)
+```
+
+O Boxplot reforça a simetria observada, com a Mediana (Q2) posicionada em r round(medidas_separatrizes_enade["Mediana (Q2)"], 4), muito próxima do centro da caixa. A Média, que é de r round(medidas_separatrizes_enade["Média"], 4), é marginalmente menor que a Mediana, o que sugere uma leve assimetria negativa (ou à esquerda), indicando que os cursos com notas mais baixas puxam a média ligeiramente para baixo.
+
+As Medidas Separatrizes demonstram que 50% dos conceitos estão situados entre o $1^{\circ}$ Quartil (r round(medidas_separatrizes_enade["1º Quartil (Q1)"], 4)) e o $3^{\circ}$ Quartil (r round(medidas_separatrizes_enade["3º Quartil (Q3)"], 4)). Este intervalo mostra a alta concentração da maioria dos resultados. Por fim, o 90º Percentil (P90) atinge r round(medidas_separatrizes_enade["90º Percentil"], 4), o que significa que apenas 10% dos cursos alcançaram um Conceito Enade (Contínuo) igual ou superior a este valor, representando o topo da qualidade de ensino avaliada.
+
+## 3.11. Proporção de Concluintes com Nota do Enem
+
+## 3.12. Nota Bruta - IDD
+
+## 3.13. IDD Contínuo
+
+## 3.14. IDD Faixa
+
+# 4. Análises de Correlação
+
+## 4.1. Correlação entre Conceito Enade e Nota Padronizada - FG
+
+Espera-se uma correlação muito forte e positiva, pois o Conceito Enade é uma média ponderada que inclui a Nota Padronizada - FG.
+
+```{r}
+# Selecionar as variáveis de interesse
+conceito_enade <- dados$`Conceito Enade (Contínuo)`
+nota_fg <- dados$`Nota Padronizada - FG`
+
+# 1. Calcular o Coeficiente de Correlação
+# use = "complete.obs" garante que os NAs sejam ignorados apenas para esta dupla de valores.
+cor_conceito_fg <- cor(conceito_enade, nota_fg, use = "complete.obs")
+
+# 2. Gerar o Diagrama de Dispersão (Plot)
+plot(conceito_enade, nota_fg,
+     main = "Diagrama de Dispersão: Conceito Enade vs. Nota Padronizada FG",
+     xlab = "Conceito Enade (Contínuo)", 
+     ylab = "Nota Padronizada - FG",
+     pch = 19, # Tipo de ponto
+     col = "blue"
+)
+
+# Adicionar o valor da correlação ao gráfico
+text(x = max(conceito_enade, na.rm = TRUE) * 0.75, 
+     y = min(nota_fg, na.rm = TRUE) * 1.05, 
+     labels = paste("r =", round(cor_conceito_fg, 4)), 
+     col = "red", 
+     cex = 1.2)
+
+# Exibir o valor exato no RMarkdown
+cat("Coeficiente de Correlação (r):", round(cor_conceito_fg, 4), "\n")
+```
+
+O Coeficiente de Correlação de Pearson ($r$) entre o Conceito Enade (Contínuo) e a Nota Padronizada - FG é de r round(cor(enade_df$Conceito Enade (Contínuo), enade_df$Nota Padronizada - FG, use = "complete.obs"), 4). Este valor indica uma correlação positiva praticamente perfeita. Isso significa que, à medida que a Nota Padronizada - FG de uma instituição aumenta, o Conceito Enade (Contínuo) também aumenta de forma extremamente consistente e linear, confirmando o peso dessa nota no conceito final. O diagrama de dispersão mostra que os pontos se agrupam de forma muito coesa em torno de uma linha reta ascendente.
+
+## 4.2. Correlação entre Conceito Enade e Nº de Concluintes Participantes
+
+Espera-se uma correlação fraca ou inexistente, pois o Conceito Enade é uma medida de qualidade, enquanto o número de participantes é uma medida de tamanho do curso.
+
+```{r}
+# Selecionar as variáveis de interesse
+num_participantes <- dados$`Nº  de Concluintes Participantes`
+# (Já usamos conceito_enade e nota_fg, mas o comando cor() será feito novamente)
+
+# 1. Calcular o Coeficiente de Correlação
+cor_conceito_participantes <- cor(conceito_enade, num_participantes, use = "complete.obs")
+
+# 2. Gerar o Diagrama de Dispersão (Plot)
+plot(conceito_enade, num_participantes,
+     main = "Diagrama de Dispersão: Conceito Enade vs. Nº de Concluintes",
+     xlab = "Conceito Enade (Contínuo)", 
+     ylab = "Nº de Concluintes Participantes",
+     pch = 19,
+     col = "darkgreen"
+)
+
+# Adicionar o valor da correlação ao gráfico
+text(x = max(conceito_enade, na.rm = TRUE) * 0.75, 
+     y = max(num_participantes, na.rm = TRUE) * 0.8, 
+     labels = paste("r =", round(cor_conceito_participantes, 4)), 
+     col = "red", 
+     cex = 1.2)
+
+# Exibir o valor exato no RMarkdown
+cat("Coeficiente de Correlação (r):", round(cor_conceito_participantes, 4), "\n")
+```
+
+O Coeficiente de Correlação de Pearson ($r$) entre o Conceito Enade (Contínuo) e o Nº de Concluintes Participantes é de r round(cor(enade_df$Conceito Enade (Contínuo), enade_df$Nº  de Concluintes Participantes, use = "complete.obs"), 4). Este valor, que está muito próximo de zero, indica uma correlação extremamente fraca ou nula. Isso sugere que o tamanho da turma ou do curso (medido pelo número de participantes) não possui relação linear com o desempenho de qualidade (Conceito Enade). O diagrama de dispersão mostra uma nuvem de pontos espalhada, sem um padrão claro de crescimento ou decréscimo.
+
+## 4.3. Análise de Correlação 3
+
+## 4.4. Análise de Correlação 4
+
+## 4.5. Análise de Correlação 5
+
+## 4.6. Análise de Correlação 6
+
+## 4.7. Análise de Correlação 7
+
+## 4.8. Análise de Correlação 8
+
+# 5. Análises de Regressão Linear Simples
+
+## 5.1. Regressão Linear Simples: Conceito Enade vs. Nota Padronizada - FG
+
+
+```{r}
+# --- 1. Seleção das Variáveis (Garantindo que a variável dependente (Y) esteja primeiro) ---
+Y <- dados$`Conceito Enade (Contínuo)`  # Variável Dependente
+X <- dados$`Nota Padronizada - FG`     # Variável Independente
+
+# --- 2. Ajuste do Modelo de Regressão Linear Simples ---
+# O comando lm() ajusta o modelo Y ~ X (Y em função de X)
+ajuste_regressao <- lm(Y ~ X)
+
+# Exibir os coeficientes estimados (b0 e b1)
+print(ajuste_regressao)
+
+# --- 3. Obter o Resumo Completo do Modelo ---
+resumo_modelo <- summary(ajuste_regressao)
+
+# Exibir o resumo completo
+print(resumo_modelo)
+
+# --- 4. Plotar o Diagrama de Dispersão com a Reta de Regressão ---
+plot(X, Y,
+     main = "Regressão Linear: Conceito Enade vs. Nota Padronizada FG",
+     xlab = "Nota Padronizada - FG (X)", 
+     ylab = "Conceito Enade (Y)",
+     pch = 19, 
+     col = "blue"
+)
+
+# Adicionar a reta de regressão ajustada ao gráfico
+abline(ajuste_regressao, col = "red", lwd = 2) 
+
+# Adicionar a equação da reta ao gráfico
+# Extrair b0 (intercept) e b1 (slope)
+b0 <- coef(ajuste_regressao)[1]
+b1 <- coef(ajuste_regressao)[2]
+eq_text <- paste0("Y = ", round(b0, 4), " + ", round(b1, 4), " * X")
+text(x = min(X, na.rm = TRUE) * 1.1, 
+     y = max(Y, na.rm = TRUE) * 0.9, 
+     labels = eq_text, 
+     col = "red", 
+     cex = 1.2)
+```
+
+A análise de regressão linear foi conduzida para quantificar a relação entre a Nota Padronizada - FG ($X$) e o Conceito Enade (Contínuo) ($Y$). O modelo ajustado resultou na equação $\hat{Y} = `r round(coef(ajuste_regressao)[1], 4)` + `r round(coef(ajuste_regressao)[2], 4)` X$.O coeficiente de regressão ($\hat{\beta}_1$) é de r round(coef(ajuste_regressao)[2], 4). Este valor indica uma forte relação positiva: para cada aumento de 1 ponto na Nota Padronizada - FG, o Conceito Enade (Contínuo) aumenta em média r round(coef(ajuste_regressao)[2], 4) pontos.A qualidade do ajuste do modelo é excepcionalmente alta, conforme demonstrado pelo R-Quadrado de r round(resumo_modelo$r.squared, 4). Este valor significa que aproximadamente r round(resumo_modelo$r.squared * 100, 2)% da variação do Conceito Enade é explicada pela Nota Padronizada - FG. Além disso, o p-valor do Teste F é próximo de zero (r format(resumo_modelo$fstatistic[3], scientific = TRUE, digits = 2)), confirmando que o modelo é estatisticamente significativo e preditivo.
+
+## 5.2. Análise de Regressão Linear Simples 2
+
+## 5.3. Análise de Regressão Linear Simples 3
+
+## 5.4. Análise de Regressão Linear Simples 4
+
+

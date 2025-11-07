@@ -1,0 +1,600 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Estatística Descritiva no R},
+  pdfauthor={Ian Carlos Lima Tavares},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Estatística Descritiva no R}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Curso: Engenharia de Software}
+\author{Ian Carlos Lima Tavares}
+\date{07/11/2025}
+
+\begin{document}
+\maketitle
+
+\section{1.Introdução}\label{introduuxe7uxe3o}
+
+Deve ter contextualização do tema, do trabalho, citação e
+contextualização da fonte do conjunto de dados, objetivos e afins.
+
+\section{2. Descrição das
+Variáveis}\label{descriuxe7uxe3o-das-variuxe1veis}
+
+Deve ter para cada variável: tipo da variável (qualitativa, quantitativa
+discreta, quantitativa contínua), para quer serve, significado ou o que
+a variável representa, valores que a variável pode assumir (Ex: 1o
+Ensino Médio, 2o Ensino Médio\ldots{} - para variáveis quantitativas,
+provalvemente, não precisa).
+
+\section{3. Análises Descritivas da
+Variáveis}\label{anuxe1lises-descritivas-da-variuxe1veis}
+
+\subsection{3.1. Área de Avaliação}\label{uxe1rea-de-avaliauxe7uxe3o}
+
+\subsection{3.2. Código da IES}\label{cuxf3digo-da-ies}
+
+\subsection{3.3. Nome da IES}\label{nome-da-ies}
+
+(provavelmente deve estar junto com o Código da IES)
+
+\subsection{3.4. Categoria
+Administrativa}\label{categoria-administrativa}
+
+\subsection{3.5. Modalidade de Ensino}\label{modalidade-de-ensino}
+
+A modalidade de ensino é uma variável qualitativa que pode assumir dois
+valores: Educação Presencial e Educação a Distância. Ela representa a
+forma de ensino do curso, isto é, se suas aulas são realizadas
+presencialmente ou de forma on-line (a distância).
+
+\begin{longtable}[t]{lcc}
+\caption{\label{tab:unnamed-chunk-2}Figura X - Tabela de Frequências da Modalidade de Ensino}\\
+\toprule
+Modalidade & Frequência Absoluta (n) & Frequência Relativa (\%)\\
+\midrule
+Educação Presencial & 9120 & 92.95\\
+Educação a Distância & 692 & 7.05\\
+\bottomrule
+\end{longtable}
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-3-1} \end{center}
+
+A partir da Tabela 1 e do Gráfico 1, percebe-se que a grande maioria dos
+cursos são realizados em `r
+df\_freq\(Modalidade de Ensino[which.max(df_freq\)Frequência Absoluta
+(n)){]}', sendo ao total `r presencial\_n observações'. Ademais, é
+perceptível uma grande diferença entre as duas modalidades de ensino,
+apresentando um desequilíbrio ou assimetria de `r diferenca\_n' cursos
+na frequência absoluta, o que equivale a `r round(diferenca\_perc, 2)'
+pontos percentuais. Esse resultado permite deduzir uma grande
+preferência da modalidade Educação Presencial na maioria dos cursos
+avaliados.
+
+\subsection{3.6. Sigla da UF}\label{sigla-da-uf}
+
+\subsection{3.7. Número de Concluintes
+Participantes}\label{nuxfamero-de-concluintes-participantes}
+
+\subsection{3.8. Nota Padronizada FG}\label{nota-padronizada-fg}
+
+A variável Nota Padronizada - FG é do tipo quantitativa contínua,
+representando uma pontuação média normalizada. Esta nota pode assumir
+valores decimais, de 0 a 5, e reflete o desempenho médio dos estudantes
+de uma instituição na componente de Formação Geral do ENADE
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-5-1} \end{center}
+
+O Histograma apresenta uma forma que se aproxima de uma distribuição
+normal (simétrica), com a maior concentração de frequência -- a moda --
+nas classes centrais. Essa concentração máxima de observações está
+localizada em torno das notas de 3.25 a 3.75, indicando que a maior
+parte das instituições obteve uma performance mediana.
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-6-1} \end{center}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0800}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1700}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1400}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0700}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1700}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0800}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2100}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0800}}@{}}
+\caption{Medidas Separatrizes da Nota Padronizada FG}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Mínimo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+1º Quartil (Q1)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Mediana (Q2)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+3º Quartil (Q3)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Máximo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+90º Percentil (P90)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+NA
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Mínimo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+1º Quartil (Q1)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Mediana (Q2)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+3º Quartil (Q3)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Máximo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+90º Percentil (P90)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+NA
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 1.8387 & 2.3891 & 2.466 & 3.075 & 5 & 432 & 3.7512 \\
+\end{longtable}
+
+O Boxplot da Nota Padronizada - FG mostra a distribuição dos dados de
+forma concisa. A linha central da caixa, que representa a Mediana (Q2),
+está em `r round(medidas\_separatrizes{[}``Mediana (Q2)''{]}, 4)'. A
+posição da Mediana, que está quase centralizada na caixa, sugere uma
+distribuição relativamente simétrica. A caixa (Intervalo Interquartil)
+abrange 50\% das observações entre o \(1^{\circ}\) Quartil `(r
+round(medidas\_separatrizes{[}``1º Quartil (Q1)''{]}, 4))' e o
+\(3^{\circ}\) Quartil `(r round(medidas\_separatrizes{[}``3º Quartil
+(Q3)''{]}, 4))'. É importante notar que o Boxplot não apresenta outliers
+(pontos fora dos bigodes), indicando que não há instituições com notas
+excepcionalmente baixas ou altas que estejam distantes da grande
+maioria.
+
+Ao analisar as Medidas Separatrizes, notamos que a Mediana (Q2), que
+divide os dados em 50\%, é de r round(medidas\_separatrizes{[}``Mediana
+(Q2)''{]}, 4). A Média, por sua vez, é de r
+round(medidas\_separatrizes{[}``Média''{]}, 4). Como o valor da Média é
+ligeiramente inferior ao da Mediana, isso confirma a leve assimetria
+negativa (assimetria à esquerda) visualizada no Histograma. Na prática,
+isso sugere que a cauda de notas mais baixas (abaixo da média) é
+sutilmente mais longa.A concentração dos dados também é bem definida
+pelo Intervalo Interquartil (IIQ), que abrange 50\% dos dados. Metade
+das notas está concentrada no intervalo entre o \(1^{\circ}\) Quartil (r
+round(medidas\_separatrizes{[}``1º Quartil (Q1)''{]}, 4)) e o
+\(3^{\circ}\) Quartil (r round(medidas\_separatrizes{[}``3º Quartil
+(Q3)''{]}, 4)). Por fim, o 90º Percentil (P90), com valor de r
+round(medidas\_separatrizes{[}``90º Percentil''{]}, 4), demarca o
+desempenho das instituições de excelência, indicando que apenas 10\%
+delas alcançaram essa nota ou mais.
+
+\subsection{3.9. Nota Padronizada CE}\label{nota-padronizada-ce}
+
+A variável Nota Padronizada - CE é do tipo quantitativa contínua,
+representando uma pontuação média normalizada. Esta nota pode assumir
+valores decimais, teoricamente de 0 a 5, e reflete o desempenho médio
+dos estudantes de uma instituição na componente de Formação Específica
+do ENADE.
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-8-1} \end{center}
+
+A distribuição da Nota Padronizada - CE exibe uma forma que se assemelha
+muito à de Formação Geral, indicando uma performance consistente. O
+Histograma mostra uma curva aproximadamente simétrica, com o pico de
+frequência, ou a moda, bem concentrada nas classes entre r
+round(quebras{[}6{]}, 4) e r round(quebras{[}8{]}, 4) (notas entre 3.15
+e 3.65). Isso demonstra que a maioria das instituições apresenta um
+desempenho intermediário no componente específico do ENADE.
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-9-1} \end{center}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0792}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1683}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1386}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0792}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1683}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0792}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2079}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0792}}@{}}
+\caption{Medidas Separatrizes da Nota Padronizada CE}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Mínimo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+1º Quartil (Q1)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Mediana (Q2)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+3º Quartil (Q3)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Máximo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+90º Percentil (P90)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+NA
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Mínimo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+1º Quartil (Q1)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Mediana (Q2)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+3º Quartil (Q3)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Máximo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+90º Percentil (P90)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+NA
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 1.6009 & 2.2262 & 2.3188 & 2.9728 & 5 & 432 & 3.7028 \\
+\end{longtable}
+
+O Boxplot corrobora a simetria, visto que a Mediana (Q2) de r
+round(medidas\_separatrizes\_ce{[}``Mediana (Q2)''{]}, 4) está
+centralizada dentro da caixa (Intervalo Interquartil), que se estende de
+r round(medidas\_separatrizes\_ce{[}``1º Quartil (Q1)''{]}, 4) até r
+round(medidas\_separatrizes\_ce{[}``3º Quartil (Q3)''{]}, 4). O Boxplot
+também não exibe outliers, o que sugere uma ausência de notas
+extremamente discrepantes nos extremos.
+
+Em relação às Medidas Separatrizes, observamos que a Média (r
+round(medidas\_separatrizes\_ce{[}``Média''{]}, 4)) é ligeiramente menor
+que a Mediana, reforçando a indicação de uma leve assimetria negativa
+(cauda sutilmente mais longa para notas mais baixas) observada no
+Histograma. Por fim, o 90º Percentil (P90), com valor de r
+round(medidas\_separatrizes\_ce{[}``90º Percentil''{]}, 4), significa
+que apenas 10\% das instituições conseguiram uma Nota Padronizada - CE
+igual ou superior a este valor, estabelecendo um limite de alto
+desempenho neste componente.
+
+\subsection{3.10. Conceito Enade}\label{conceito-enade}
+
+A variável Conceito Enade (Contínuo) é do tipo quantitativa contínua,
+que sintetiza o desempenho dos estudantes em Formação Geral e Componente
+Específico. Este conceito pode assumir valores decimais, teoricamente de
+0 a 5, e é a nota final utilizada para classificar a qualidade de um
+curso.
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-11-1} \end{center}
+
+A distribuição do Conceito Enade (Contínuo) é o reflexo da média
+ponderada dos componentes de Formação Geral e Específica, e, por isso,
+sua forma é similar às variáveis anteriores. O Histograma exibe uma
+distribuição com formato ligeiramente alongado, sendo a moda concentrada
+em torno dos conceitos de 3.35 a 3.85. Isso indica que a maioria dos
+cursos avaliados pelo ENADE alcança conceitos médios a bons.
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-12-1} \end{center}
+
+\begin{longtable}[]{@{}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0792}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1683}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1386}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0792}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1683}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0792}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.2079}}
+  >{\centering\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.0792}}@{}}
+\caption{Medidas Separatrizes do Conceito Enade
+(Contínuo)}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Mínimo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+1º Quartil (Q1)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Mediana (Q2)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+3º Quartil (Q3)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Máximo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+90º Percentil (P90)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+NA
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\centering
+Mínimo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+1º Quartil (Q1)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Mediana (Q2)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Média
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+3º Quartil (Q3)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+Máximo
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+90º Percentil (P90)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+NA
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 1.6796 & 2.2681 & 2.3556 & 2.9471 & 5 & 432 & 3.6582 \\
+\end{longtable}
+
+O Boxplot reforça a simetria observada, com a Mediana (Q2) posicionada
+em r round(medidas\_separatrizes\_enade{[}``Mediana (Q2)''{]}, 4), muito
+próxima do centro da caixa. A Média, que é de r
+round(medidas\_separatrizes\_enade{[}``Média''{]}, 4), é marginalmente
+menor que a Mediana, o que sugere uma leve assimetria negativa (ou à
+esquerda), indicando que os cursos com notas mais baixas puxam a média
+ligeiramente para baixo.
+
+As Medidas Separatrizes demonstram que 50\% dos conceitos estão situados
+entre o \(1^{\circ}\) Quartil (r
+round(medidas\_separatrizes\_enade{[}``1º Quartil (Q1)''{]}, 4)) e o
+\(3^{\circ}\) Quartil (r round(medidas\_separatrizes\_enade{[}``3º
+Quartil (Q3)''{]}, 4)). Este intervalo mostra a alta concentração da
+maioria dos resultados. Por fim, o 90º Percentil (P90) atinge r
+round(medidas\_separatrizes\_enade{[}``90º Percentil''{]}, 4), o que
+significa que apenas 10\% dos cursos alcançaram um Conceito Enade
+(Contínuo) igual ou superior a este valor, representando o topo da
+qualidade de ensino avaliada.
+
+\subsection{3.11. Proporção de Concluintes com Nota do
+Enem}\label{proporuxe7uxe3o-de-concluintes-com-nota-do-enem}
+
+\subsection{3.12. Nota Bruta - IDD}\label{nota-bruta---idd}
+
+\subsection{3.13. IDD Contínuo}\label{idd-contuxednuo}
+
+\subsection{3.14. IDD Faixa}\label{idd-faixa}
+
+\section{4. Análises de
+Correlação}\label{anuxe1lises-de-correlauxe7uxe3o}
+
+\subsection{4.1. Correlação entre Conceito Enade e Nota Padronizada -
+FG}\label{correlauxe7uxe3o-entre-conceito-enade-e-nota-padronizada---fg}
+
+Espera-se uma correlação muito forte e positiva, pois o Conceito Enade é
+uma média ponderada que inclui a Nota Padronizada - FG.
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-13-1} \end{center}
+
+\begin{verbatim}
+## Coeficiente de Correlação (r): 0.8263
+\end{verbatim}
+
+O Coeficiente de Correlação de Pearson (\(r\)) entre o Conceito Enade
+(Contínuo) e a Nota Padronizada - FG é de r
+round(cor(enade\_df\(Conceito Enade (Contínuo), enade_df\)Nota
+Padronizada - FG, use = ``complete.obs''), 4). Este valor indica uma
+correlação positiva praticamente perfeita. Isso significa que, à medida
+que a Nota Padronizada - FG de uma instituição aumenta, o Conceito Enade
+(Contínuo) também aumenta de forma extremamente consistente e linear,
+confirmando o peso dessa nota no conceito final. O diagrama de dispersão
+mostra que os pontos se agrupam de forma muito coesa em torno de uma
+linha reta ascendente.
+
+\subsection{4.2. Correlação entre Conceito Enade e Nº de Concluintes
+Participantes}\label{correlauxe7uxe3o-entre-conceito-enade-e-nuxba-de-concluintes-participantes}
+
+Espera-se uma correlação fraca ou inexistente, pois o Conceito Enade é
+uma medida de qualidade, enquanto o número de participantes é uma medida
+de tamanho do curso.
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-14-1} \end{center}
+
+\begin{verbatim}
+## Coeficiente de Correlação (r): 0.034
+\end{verbatim}
+
+O Coeficiente de Correlação de Pearson (\(r\)) entre o Conceito Enade
+(Contínuo) e o Nº de Concluintes Participantes é de r
+round(cor(enade\_df\(Conceito Enade (Contínuo), enade_df\)Nº de
+Concluintes Participantes, use = ``complete.obs''), 4). Este valor, que
+está muito próximo de zero, indica uma correlação extremamente fraca ou
+nula. Isso sugere que o tamanho da turma ou do curso (medido pelo número
+de participantes) não possui relação linear com o desempenho de
+qualidade (Conceito Enade). O diagrama de dispersão mostra uma nuvem de
+pontos espalhada, sem um padrão claro de crescimento ou decréscimo.
+
+\subsection{4.3. Análise de Correlação
+3}\label{anuxe1lise-de-correlauxe7uxe3o-3}
+
+\subsection{4.4. Análise de Correlação
+4}\label{anuxe1lise-de-correlauxe7uxe3o-4}
+
+\subsection{4.5. Análise de Correlação
+5}\label{anuxe1lise-de-correlauxe7uxe3o-5}
+
+\subsection{4.6. Análise de Correlação
+6}\label{anuxe1lise-de-correlauxe7uxe3o-6}
+
+\subsection{4.7. Análise de Correlação
+7}\label{anuxe1lise-de-correlauxe7uxe3o-7}
+
+\subsection{4.8. Análise de Correlação
+8}\label{anuxe1lise-de-correlauxe7uxe3o-8}
+
+\section{5. Análises de Regressão Linear
+Simples}\label{anuxe1lises-de-regressuxe3o-linear-simples}
+
+\subsection{5.1. Regressão Linear Simples: Conceito Enade vs.~Nota
+Padronizada -
+FG}\label{regressuxe3o-linear-simples-conceito-enade-vs.-nota-padronizada---fg}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Y ~ X)
+## 
+## Coefficients:
+## (Intercept)            X  
+##      0.3403       0.8172
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Y ~ X)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.8940 -0.3290  0.0021  0.3351  3.4097 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 0.340287   0.015175   22.42   <2e-16 ***
+## X           0.817248   0.005752  142.08   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.5223 on 9378 degrees of freedom
+##   (432 observations deleted due to missingness)
+## Multiple R-squared:  0.6828, Adjusted R-squared:  0.6828 
+## F-statistic: 2.019e+04 on 1 and 9378 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{center}\includegraphics[width=0.8\linewidth]{Analise-Ian_files/figure-latex/unnamed-chunk-15-1} \end{center}
+
+A análise de regressão linear foi conduzida para quantificar a relação
+entre a Nota Padronizada - FG (\(X\)) e o Conceito Enade (Contínuo)
+(\(Y\)). O modelo ajustado resultou na equação
+\(\hat{Y} = 0.3403 + 0.8172 X\).O coeficiente de regressão
+(\(\hat{\beta}_1\)) é de r round(coef(ajuste\_regressao){[}2{]}, 4).
+Este valor indica uma forte relação positiva: para cada aumento de 1
+ponto na Nota Padronizada - FG, o Conceito Enade (Contínuo) aumenta em
+média r round(coef(ajuste\_regressao){[}2{]}, 4) pontos.A qualidade do
+ajuste do modelo é excepcionalmente alta, conforme demonstrado pelo
+R-Quadrado de r
+round(resumo\_modelo\(r.squared, 4). Este valor significa que aproximadamente r round(resumo_modelo\)r.squared
+* 100, 2)\% da variação do Conceito Enade é explicada pela Nota
+Padronizada - FG. Além disso, o p-valor do Teste F é próximo de zero (r
+format(resumo\_modelo\$fstatistic{[}3{]}, scientific = TRUE, digits =
+2)), confirmando que o modelo é estatisticamente significativo e
+preditivo.
+
+\subsection{5.2. Análise de Regressão Linear Simples
+2}\label{anuxe1lise-de-regressuxe3o-linear-simples-2}
+
+\subsection{5.3. Análise de Regressão Linear Simples
+3}\label{anuxe1lise-de-regressuxe3o-linear-simples-3}
+
+\subsection{5.4. Análise de Regressão Linear Simples
+4}\label{anuxe1lise-de-regressuxe3o-linear-simples-4}
+
+\end{document}
