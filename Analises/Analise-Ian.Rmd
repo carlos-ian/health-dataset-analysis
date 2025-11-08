@@ -114,11 +114,11 @@ ggplot(df_freq, aes(x = `Modalidade de Ensino`, y = `Frequência Relativa (%)`, 
 
 A análise da distribuição de frequências, apresentada na Tabela X e ilustrada no Gráfico X, revela uma forte concentração dos cursos em uma única modalidade.
 
-Percebe-se que a grande maioria dos cursos são realizados na modalidade r modalidade_maioria, totalizando 'r presencial_n' observações. Em termos relativos, essa modalidade responde por 'r presencial_perc%' do conjunto de dados.
+Percebe-se que a grande maioria dos cursos são realizados na modalidade `r modalidade_maioria`, totalizando `r presencial_n` observações. Em termos relativos, essa modalidade responde por `r presencial_perc%` do conjunto de dados.
 
-O contraste entre as categorias é significativo, demonstrando uma acentuada assimetria na oferta ou registro. A diferença na frequência absoluta entre a modalidade mais e a menos representativa é de r diferenca_n cursos, o que se traduz em uma disparidade de 'r round(diferenca_perc, 2)' pontos percentuais na frequência relativa.
+O contraste entre as categorias é significativo, demonstrando uma acentuada assimetria na oferta ou registro. A diferença na frequência absoluta entre a modalidade mais e a menos representativa é de r diferenca_n cursos, o que se traduz em uma disparidade de `r round(diferenca_perc, 2)` pontos percentuais na frequência relativa.
 
-Este resultado indica uma clara dominância e preferência pela modalidade 'r modalidade_maioria' no conjunto de dados avaliado, um fator crucial para a compreensão da estrutura dos cursos.
+Este resultado indica uma clara dominância e preferência pela modalidade `r modalidade_maioria` no conjunto de dados avaliado, um fator crucial para a compreensão da estrutura dos cursos.
 
 ### 3.6. Sigla da UF
 
@@ -206,15 +206,15 @@ knitr::kable(medidas_df,
 ```
 
 
-O Boxplot (Figura Y) complementa esta visualização. A linha central da caixa, que representa a Mediana ($Q_2$), posiciona-se em r Mediana. Sua posição, quase centralizada na caixa, sugere uma distribuição relativamente simétrica dos dados.
+O Boxplot (Figura Y) complementa esta visualização. A linha central da caixa, que representa a Mediana ($Q_2$), posiciona-se em `r Mediana`. Sua posição, quase centralizada na caixa, sugere uma distribuição relativamente simétrica dos dados.
 
 A caixa (Intervalo Interquartil) abrange 50% das observações entre o $1^{\circ}$ Quartil ($Q_1$), com valor de r Q1, e o $3^{\circ}$ Quartil ($Q_3$), com valor de r Q3. É importante notar que o Boxplot não apresenta outliers (pontos fora dos bigodes), indicando que as notas extremas não são discrepantes em relação à grande maioria.
 
-Ao analisar as Medidas Separatrizes (Tabela X), notamos que a Mediana ($Q_2$), que divide os dados em 50%, é de r Mediana. A Média, por sua vez, é de r Media.
+Ao analisar as Medidas Separatrizes (Tabela X), notamos que a Mediana ($Q_2$), que divide os dados em 50%, é de r Mediana. A Média, por sua vez, é de `r Media`.
 
-Como o valor da Média (r Media) é ligeiramente inferior ao da Mediana (r Mediana), isso confirma a leve assimetria negativa (assimetria à esquerda) visualizada no Histograma. Na prática, isso sugere que a cauda de notas mais baixas (abaixo da média) é sutilmente mais longa.
+Como o valor da Média (`r Media`) é ligeiramente inferior ao da Mediana (`r Mediana`), isso confirma a leve assimetria negativa (assimetria à esquerda) visualizada no Histograma. Na prática, isso sugere que a cauda de notas mais baixas (abaixo da média) é sutilmente mais longa.
 
-A concentração dos dados é bem definida pelo Intervalo Interquartil (IIQ), que é a diferença entre $Q_3$ e $Q_1$, resultando em $\text{IIQ} = \text{`r Q3`} - \text{`r Q1`} = \text{`r round(IIQ, 4)`}$. Este valor informa que 50% das notas dos cursos está concentrada em um intervalo estreito de r round(IIQ, 4) pontos. Por fim, o $90^{\circ}$ Percentil ($P_{90}$), com valor de r P90, demarca o desempenho das instituições de excelência, indicando que apenas 10% delas alcançaram essa nota ou mais. O intervalo completo de notas vai de r Minimo a r Maximo.
+A concentração dos dados é bem definida pelo Intervalo Interquartil (IIQ), que é a diferença entre $Q_3$ e $Q_1$, resultando em $\text{IIQ} = \text{`r Q3`} - \text{`r Q1`} = \text{`r round(IIQ, 4)`}$. Este valor informa que 50% das notas dos cursos está concentrada em um intervalo estreito de r round(IIQ, 4) pontos. Por fim, o $90^{\circ}$ Percentil ($P_{90}$), com valor de r P90, demarca o desempenho das instituições de excelência, indicando que apenas 10% delas alcançaram essa nota ou mais. O intervalo completo de notas vai de `r Minimo` a `r Maximo`.
 
 ### 3.9. Nota Padronizada CE
 
