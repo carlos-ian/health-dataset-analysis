@@ -1,6 +1,6 @@
-# health-dataset-analysis
+# Análise de Qualidade Educacional
 
-Este repositório contém um estudo estatístico realizado a partir de um conjunto de dados com informações de **5.000 indivíduos**, abordando variáveis relacionadas à **saúde**, **dieta**, **nível de atividade física** e mais. 
+Este repositório contém um estudo estatístico para a disciplina de **Probabilidade e Esatística** do curso de **Engenharia de Software** da **Universidade Federal de Goiás**. Ele foi realizado a partir de um conjunto de dados com informações de **5.000 indivíduos**, abordando variáveis relacionadas à **saúde**, **dieta**, **nível de atividade física** e mais. 
 
 O projeto foi desenvolvido como parte da disciplina de **Probabilidade e Estatística** do 2o Semestre do curso de "Engenharia de Software" da UFG, com foco na aplicação prática de análise descritiva.
 
